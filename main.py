@@ -1,6 +1,7 @@
 # Dino.py 
 # Made by EarthlyEric6
 import sys
+import os
 import pygame
 from pygame.locals import QUIT
 import object
@@ -9,7 +10,8 @@ import object
 pygame.init()
 
 width, height = 640, 360
-screen = pygame.display.set_mode((width, height))   
+screen = pygame.display.set_mode((width, height))
+pygame.display.set_icon(pygame.image.load(os.path.join("dino.png")))
 pygame.display.set_caption("Dino.py")
 
 GameClock = pygame.time.Clock() 
@@ -22,6 +24,5 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-            
     pygame.display.update() 
    
