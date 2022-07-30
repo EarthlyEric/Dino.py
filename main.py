@@ -65,6 +65,12 @@ def menu():
     screen.blit(background_image,(0,380))
     screen.blit(pygame.image.load(os.path.join('dino.png')),(80,310))
 
+    pre_button=pygame.image.load(os.path.join('resource/UI/play_button.png'))
+    button=pygame.transform.scale(pre_button,(200,120))
+    button_rect=button.get_rect()
+
+    screen.blit(button,(450,250))
+
     font=pygame.font.Font(os.path.join('resource/font/Minecraft.ttf'),144)
     screen.blit(font.render('DINO.PY', 0, (0,0,0), (255,255,255)),(250,70))
     while True:
@@ -73,9 +79,8 @@ def menu():
             if event.type==pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-        
+            elif event.type==pygame.MOUSEBUTTONDOWN:
+                if button_rect.collidepoint(event.pos):
+                    main()
         pygame.display.update()
-
-
-
 menu()
