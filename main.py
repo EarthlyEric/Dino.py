@@ -10,6 +10,7 @@ import pygame
 
 # PyGame Init
 pygame.init()
+pygame.mixer.init()
 
 # Import Game Resource
 FONT=os.path.join('resource/font/Minecraft.ttf')
@@ -20,7 +21,8 @@ dino_running_image=[pygame.image.load(os.path.join('resource/Dino/DinoRun1.png')
 dino_jumping_image=pygame.image.load(os.path.join('resource/Dino/DinoJump.png'))
 dino_ducking_image=[pygame.image.load(os.path.join('resource/Dino/DinoDuck1.png ')),
                     pygame.image.load(os.path.join('resource/Dino/DinoDuck2.png'))]
-
+point_sound=pygame.mixer.Sound(os.path.join('resource/sound/point.wav'))
+jump_sound=pygame.mixer.Sound(os.path.join('resource/sound/jump.wav'))
 # Setup Game Settings 
 width, height = 1100,600 
 game_animation_speed = 10
@@ -69,23 +71,24 @@ class Dino:
         self.dino_rect.y=self.y_pos
         self.step=self.step+1
     def jump(self):
-        self.image = self.jump_img
+        self.image = self.jumping
         if self.dino_jump:
-            self.dino_rect.y -= self.jump_vel * 4  # 依目前的跳躍速度來移動小恐龍的y座標值
-            self.jump_vel -= 0.5  # 若jump_vel小於0則代表小恐龍逐漸往下掉
+            self.dino_rect.y -= self.jump_vel * 4
+            self.jump_vel -= 0.5  
         if self.jump_vel < - self.jump_v:
             self.dino_jump = False
             self.jump_vel = self.jump_v
+        pygame.mixer.Sound.play(jump_sound)
     def update(self,input:pygame.key):
-        if input==input[pygame.K_SPACE] and not self.dino_jump:
+        if input[pygame.K_SPACE] and not self.dino_jump:
             self.dino_run=False
             self.dino_duck=False
             self.dino_jump=True
-        elif input==input[pygame.K_c] and not self.dino_jump:
+        elif input[pygame.K_c] and not self.dino_jump:
             self.dino_run=False
             self.dino_duck=True
             self.dino_jump=False
-        elif not (self.dino_jump or input[pygame.K_DOWN]):
+        elif not (self.dino_jump or input[pygame.K_c]):
             self.dino_run=True
             self.dino_duck=False
             self.dino_jump=False
@@ -112,8 +115,9 @@ class Point():
     def update(self):
         global game_animation_speed
         self.point=self.point+1
-        if self.point % 100 == 0:
-            game_animation_speed += 1
+        if self.point % 200 == 0:
+            game_animation_speed=game_animation_speed+1
+            pygame.mixer.Sound.play(point_sound)
     def draw(self,screen):
         po=self.font.render(f'{self.point}',True,(0,0,0),(255,255,255))
         screen.blit(po,(self.x,self.y))
