@@ -2,17 +2,18 @@
 # -*- coding: utf-8 -*-
 # Dino.py 
 # Made by EarthlyEric6
-from pickle import TRUE
+# Version 1.0
+# Date: 2021-09-25
+# Updated 01: 2024-5-5
 import sys
 import os
 import pygame
 
-
-# PyGame Init
+# PyGame Initialization
 pygame.init()
 pygame.mixer.init()
 
-# Import Game Resource
+# Import Game Image Resource, Sound, Font
 FONT=os.path.join('resource/font/Minecraft.ttf')
 background_image = pygame.image.load(os.path.join('resource/background/horizon.png'))
 dino_image=pygame.image.load(os.path.join('dino.png'))
@@ -23,6 +24,7 @@ dino_ducking_image=[pygame.image.load(os.path.join('resource/Dino/DinoDuck1.png 
                     pygame.image.load(os.path.join('resource/Dino/DinoDuck2.png'))]
 point_sound=pygame.mixer.Sound(os.path.join('resource/sound/point.wav'))
 jump_sound=pygame.mixer.Sound(os.path.join('resource/sound/jump.wav'))
+
 # Setup Game Settings 
 width, height = 1100,600 
 game_animation_speed = 10
@@ -30,7 +32,7 @@ screen = pygame.display.set_mode((width, height))
 pygame.display.set_icon(pygame.image.load(os.path.join('dino.png')))
 pygame.display.set_caption('Dino.py')
 
-# Game Clock
+# Set up Game Clocks
 GameClock = pygame.time.Clock()
 
 # Background Animation
@@ -38,7 +40,7 @@ x_pos=0
 y_pos=380
 background_width=background_image.get_width()
 
-# Dino Class
+# Build Dino
 class Dino:
     x_pos=80
     y_pos=310
@@ -64,12 +66,14 @@ class Dino:
         self.dino_rect.x=self.x_pos
         self.dino_rect.y=self.y_pos
         self.step+=1
+
     def duck(self):
         self.image=self.ducking[self.step//5]
         self.dino_rect=self.image.get_rect()
         self.dino_rect.x=self.x_pos
         self.dino_rect.y=self.y_pos
         self.step=self.step+1
+
     def jump(self):
         self.image = self.jumping
         if self.dino_jump:
@@ -79,6 +83,7 @@ class Dino:
             self.dino_jump = False
             self.jump_vel = self.jump_v
         pygame.mixer.Sound.play(jump_sound)
+
     def update(self,input:pygame.key):
         if input[pygame.K_SPACE] and not self.dino_jump:
             self.dino_run=False
@@ -101,9 +106,10 @@ class Dino:
             self.duck()
         if self.step >= 10:
             self.step = 0
+
     def draw(self,screen):
         screen.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
-# Point
+# Point System
 class Point():
     x_pos=950
     y_pos=30
@@ -112,16 +118,17 @@ class Point():
         self.point=0
         self.x=self.x_pos
         self.y=self.y_pos
+
     def update(self):
         global game_animation_speed
         self.point=self.point+1
         if self.point % 200 == 0:
             game_animation_speed=game_animation_speed+1
             pygame.mixer.Sound.play(point_sound)
+
     def draw(self,screen):
         po=self.font.render(f'{self.point}',True,(0,0,0),(255,255,255))
         screen.blit(po,(self.x,self.y))
-
 
 def background_animation():
     screen.fill((255,255,255))
@@ -129,7 +136,7 @@ def background_animation():
     image_width = background_image.get_width()
     screen.blit(background_image, (x_pos, y_pos))
     screen.blit(background_image, (image_width + x_pos, y_pos))
-    x_pos -= game_animation_speed  # 使背景移動
+    x_pos -= game_animation_speed  # make background moving
     if x_pos <= -image_width:
         screen.blit(background_image, (image_width + x_pos, y_pos))
         x_pos = 0
@@ -143,7 +150,6 @@ def main():
         # Background
         background_animation()
 
-        
         input=pygame.key.get_pressed()
         dino.update(input)
         dino.draw(screen)
