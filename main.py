@@ -15,6 +15,7 @@ pygame.mixer.init()
 
 # Import Game Image Resource, Sound, Font
 FONT=os.path.join('resource/font/Minecraft.ttf')
+
 background_image = pygame.image.load(os.path.join('resource/background/horizon.png'))
 dino_image=pygame.image.load(os.path.join('dino.png'))
 dino_running_image=[pygame.image.load(os.path.join('resource/Dino/DinoRun1.png')),
@@ -22,6 +23,7 @@ dino_running_image=[pygame.image.load(os.path.join('resource/Dino/DinoRun1.png')
 dino_jumping_image=pygame.image.load(os.path.join('resource/Dino/DinoJump.png'))
 dino_ducking_image=[pygame.image.load(os.path.join('resource/Dino/DinoDuck1.png ')),
                     pygame.image.load(os.path.join('resource/Dino/DinoDuck2.png'))]
+
 point_sound=pygame.mixer.Sound(os.path.join('resource/sound/point.wav'))
 jump_sound=pygame.mixer.Sound(os.path.join('resource/sound/jump.wav'))
 
@@ -172,7 +174,7 @@ def menu():
     font_size_big=pygame.font.Font(FONT,144)
     font_size_small=pygame.font.Font(FONT,36)
     title=font_size_big.render('Dino.py',True,(0,0,0),(255,255,255))
-    text=font_size_small.render('Plese Press Space to Start The Game !!',True,(0,0,0),(255,255,255))
+    text=font_size_small.render('Plese Press Space Key to Start The Game !',True,(0,0,0),(255,255,255))
     screen.blit(text,(250,310))
     screen.blit(title,(250,70))
     
